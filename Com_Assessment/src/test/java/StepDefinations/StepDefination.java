@@ -1,6 +1,8 @@
 package StepDefinations;
 
 import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -11,6 +13,7 @@ import org.testng.Assert;
 import reusablecomponents.ReadPropertyFile;
 import uistore.SearchPageDetails;
 import uistore.SigninPageDetails;
+import utilities.TakeScreenShot;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -19,6 +22,9 @@ import io.cucumber.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 public class StepDefination extends ReadPropertyFile {
+	public static Logger log=Logger.getLogger(ReadPropertyFile.class.getName());
+	
+	
 
 	@Given("^Initialize browser with chrome$")
 	public void initialize_browser_with_chrome() throws Throwable {
@@ -29,11 +35,21 @@ public class StepDefination extends ReadPropertyFile {
 
 	@And("^Navigate to \"([^\"]*)\" site$")
 	public void navigate_to_something_site(String strArg1) throws Throwable {
-		
+		log.info("navigated to url");
 
 		driver.get(strArg1);
 
 	}
+	@Then("^Click on Rock on Stand$")
+    public void click_on_rock_on_stand() throws Throwable {
+       driver.findElement(By.xpath("//*[@id=\"CollectionSection-1597674868179\"]/div[2]/div/div/div[1]/div/a/div[2]/div[1]")).click();
+       log.info("selected on desired element");
+    }
+
+    @Then("^Click on Click here$")
+    public void click_on_click_here() throws Throwable {
+       driver.findElement(By.xpath("//*[@id=\"myownreturntext\"]/a")).click();
+    }
 
 	@When("^User enters (.+) and (.+) and sign in$")
 	public void user_enters_and_and_sign_in(String email, String password) throws Throwable {
@@ -43,6 +59,7 @@ public class StepDefination extends ReadPropertyFile {
 
 		s.getPassword().sendKeys(password);
 		s.getSigninButton().click();
+		log.info("entered details");
 
 	}
 
@@ -62,6 +79,14 @@ public class StepDefination extends ReadPropertyFile {
 
 	@And("^Close the driver$")
 	public void close_the_driver() throws Throwable {
+TakeScreenShot r = new TakeScreenShot();
+		
+		try {
+			r.getScreenshot("screenshots");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		driver.close();
 
 	}
